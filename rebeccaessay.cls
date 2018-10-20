@@ -186,7 +186,7 @@
 
 	\ifx\cmdKV@heading@instructor\undefined\else\cmdKV@heading@instructor\par\fi
 	\ifx\cmdKV@heading@course\undefined\else\cmdKV@heading@course\par\fi
-	\ifx\cmdKV@heading@date\undefined\else\cmdKV@heading@date\par\fi
+	\ifx\cmdKV@heading@date\undefined\@date\else\cmdKV@heading@date\par\fi
 	\vspace{1em}}}
 
 \newcommand{\intro}[1]{\pagebreak\heading{#1}\maketitle\suppressindent}
@@ -215,8 +215,7 @@
 \define@cmdkey{coverletter}{signature}{}
 \presetkeys{coverletter}{dear={}, signature={Sincerely,}}{}
 \newenvironment{coverletter}[1]
-	{\setkeys{address, coverletter}{#1}%
-	\address{#1}
+	{\address{#1}
 	
 	\cmdKV@coverletter@dear \cmdKV@coverletter@to,
 	
