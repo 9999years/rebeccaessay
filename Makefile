@@ -1,6 +1,7 @@
 DIST_FILES := rebeccaessay.cls
-TEXMF_ROOT := "${HOME}/texmf"
-INSTALL_DIR := "$(TEXMF_ROOT)/tex/latex/rebeccaessay"
+HOME := C:/Users/arvensis
+TEXMF_ROOT := $(HOME)/texmf
+INSTALL_DIR := $(TEXMF_ROOT)/tex/latex/rebeccaessay
 
 install: rebeccaessay.cls
 	install -d ${INSTALL_DIR}

@@ -57,6 +57,7 @@
 \DeclareBoolOption{1}
 \DeclareBoolOption{1.5}
 \DeclareBoolOption{2}
+\DeclareBoolOption{times}
 \DeclareStringOption[\relax]{surname}
 \ProcessKeyvalOptions*
 
@@ -70,9 +71,13 @@
 	\doublespacing
 \fi
 
-\setmainfont[
-	Numbers=OldStyle,
-]{Garamond Premier Pro}
+\ifrebeccaessay@times
+	\setmainfont{Times New Roman}
+\else
+	\setmainfont[
+		Numbers=OldStyle,
+	]{Garamond Premier Pro}
+\fi
 
 \errorcontextlines 10
 \widowpenalties 1 10000
@@ -129,7 +134,7 @@
 \renewcommand{\headrulewidth}{0pt}
 \AtBeginDocument{\thispagestyle{empty}}
 \newcommand{\suppressindent}{\par\@afterindentfalse\@afterheading}
-\newcommand*\NoIndentAfterEnv[1]{\AfterEndEnvironment{#1}{\supressindent}}
+\newcommand*\NoIndentAfterEnv[1]{\AfterEndEnvironment{#1}{\suppressindent}}
 \NoIndentAfterEnv{displayquote}
 \NoIndentAfterEnv{enumerate}
 
