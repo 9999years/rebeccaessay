@@ -167,13 +167,10 @@
 
 \renewcommand{\labelitemi}{---}
 
-\newenvironment{bquote}
+\renewenvironment{quote}
 	{\vspace{1em}%
-	\begin{center}%
-	\begin{minipage}{0.85\linewidth}%
-	\setlength{\parindent}{0.5in}}
-	{\end{minipage}
-	\end{center}
+	\begin{adjustwidth}{1in}{1in}}
+	{\end{adjustwidth}%
 	\vspace{1em}}
 
 \setlength{\footnotesep}{\baselineskip}
