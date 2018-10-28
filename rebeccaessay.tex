@@ -9,7 +9,7 @@
 \begin{abstract}
 	\re\ is a document class extending \ltxclass{article} for
 	\fontspecok\ typeset in Garamond, with \mla\ citations via
-	\hologo{BibLaTeX}, variable line spacing, and a \env{coverletter}
+	\hologo{BibTeX}, variable line spacing, and a \env{coverletter}
 	environment.
 
 	\re\ is, as the name implies, mostly intended for personal use.
@@ -39,22 +39,22 @@ table~\ref{tab:coverletteroptions} for details on the mandatory options.
 	\centering
 	\caption{Options for the \env{coverletter} environment}
 	\label{tab:coverletteroptions}
-	\begin{options}
-		\item[course] The course being taught
-		\item[instructor] The course instructor
-		\item[date] The cover letter's date
-		\item[address] (Optional) Your address' street
-		\item[city] (Optional) Your address' city; may include a zip
-			code or country if you'd like
-		\item[phone] (Optional) Your phone number
-		\item[email] (Optional) Your email
-		\item[dear] (Optional) Text to appear before the professor's
-			name; blank by default.
-		\item[to] The recipient of the cover letter; usually the
-			course instructor.
-		\item[signature] (Optional, default: ``Sincerely,'') Partial
-			signature text.
-	\end{options}
+	\begin{Optionlist}
+		course & The course being taught \\
+		instructor & The course instructor \\
+		date & The cover letter's date \\
+		address & (Optional) Your address' street \\
+		city & (Optional) Your address' city; may include a zip
+			code or country if you'd like \\
+		phone & (Optional) Your phone number \\
+		email & (Optional) Your email \\
+		dear & (Optional) Text to appear before the professor's
+			name; blank by default. \\
+		to & The recipient of the cover letter; usually the
+			course instructor. \\
+		signature & (Optional, default: ``Sincerely,'') Partial
+			signature text. \\
+	\end{Optionlist}
 \end{table}
 \end{macro}
 
@@ -75,12 +75,12 @@ better mechanism for sharing these values between environments.
 	\centering
 	\caption{Options for \cs{intro} and \cs{header}}
 	\label{tab:introoptions}
-	\begin{options}
-		\item[course] (Optional) The course being taught
-		\item[instructor] (Optional) The course instructor
-		\item[date] (Optional; default: the date given with
-			\cs{date}) The essay's date
-	\end{options}
+	\begin{Optionlist}
+		course & (Optional) The course being taught \\
+		instructor & (Optional) The course instructor \\
+		date & (Optional; default: the date given with
+			\cs{date}) The essay's date \\
+	\end{Optionlist}
 \end{table}
 \end{macro}
 

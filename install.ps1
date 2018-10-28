@@ -10,3 +10,7 @@ If(!(Test-Path $dest)) {
 }
 
 cp "$class.cls" $dest
+pushd
+cd ~
+kpsewhich "$class.cls"
+popd

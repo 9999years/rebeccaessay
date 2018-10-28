@@ -20,8 +20,6 @@
 \newcommand{\fontspecok}{\hologo{XeLaTeX} or \hologo{LuaTeX}}
 \newcommand{\ext}[1]{\texttt{.#1}}
 \newcommand{\filename}[1]{\texttt{#1}}
-\NewExpandableDocumentCommand{\cmd}{m m}
-	{\cs{#1}|#2|}
 
 \newif\ifoptions@first
 \newenvironment{options}
@@ -32,11 +30,11 @@
 		\else
 			\\
 		\fi
-		#1 &}%
-	\begin{Optionslist}}
-	{\\\end{Optionslist}}
+		##1 &}%
+	\begin{Optionlist}}
+	{\end{Optionlist}}
 
-\newcommand{\mla}{\ac{mla}}
+\newcommand{\mla}{\textsc{mla}}
 \newcommand{\re}{\ltxclass{rebeccaessay}}
 
 % definition copied from doc package \DescribeMacro
