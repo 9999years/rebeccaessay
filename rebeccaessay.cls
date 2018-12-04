@@ -58,6 +58,7 @@
 \DeclareBoolOption{1.5}
 \DeclareBoolOption{2}
 \DeclareBoolOption{times}
+\DeclareBoolOption{tabu}
 \DeclareStringOption[\relax]{surname}
 \ProcessKeyvalOptions*
 
@@ -79,8 +80,16 @@
 	]{Garamond Premier Pro}
 \fi
 
+\ifrebeccaessay@tabu
+\RequirePackage{multirow}
+\RequirePackage{booktabs}
+\RequirePackage{longtable}
+\RequirePackage{tabu}
+\NewExpandableDocumentCommand{\Th}{O{l} m}
+	{\multicolumn{1}{#1}{\Bf{#2}}}
+\fi
+
 \errorcontextlines 10
-\widowpenalties 1 10000
 \raggedbottom
 \setlength{\parindent}{0.5in}
 \setlength{\parskip}{0em}
@@ -142,7 +151,7 @@
 	\begin{center}
 		\let\footnote\thanks
 		{
-			\LARGE
+			\Large
 			\@title
 			\par
 		}
