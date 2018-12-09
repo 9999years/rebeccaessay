@@ -52,6 +52,7 @@
 \RequirePackage{microtype}
 \RequirePackage{graphicx}
 \RequirePackage{setspace}
+\RequirePackage{caption}
 
 \RequirePackage{kvoptions}
 \DeclareBoolOption{1}
@@ -80,6 +81,8 @@
 	]{Garamond Premier Pro}
 \fi
 
+\usepackage{gillius}
+
 \ifrebeccaessay@tabu
 \RequirePackage{multirow}
 \RequirePackage{booktabs}
@@ -101,6 +104,9 @@
 \let\It\textit
 \let\Tt\texttt
 \let\ac\textsc
+
+% figure captions
+\captionsetup{format=hang, font={sf,footnotesize}, margin=1in}
 
 % bibliography
 \renewcommand{\mkbegdispquote}[2]{\itshape}
