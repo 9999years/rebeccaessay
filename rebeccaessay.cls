@@ -241,3 +241,11 @@
 	\noindent\hspace*{0.5in}\cmdKV@coverletter@signature \\
 	\hspace*{0.5in}\hspace*{2em}--- \@author}
 
+\NewDocumentCommand{\newacronym}{o m}
+	{\IfValueTF{#1}%
+		{\def\@acronym@cs{#1}}%
+		{\edef\@acronym@cs{\csname #2\endcsname}}%
+	\expandafter\def\@acronym@cs{\Sc{#2}}}
+
+\NewDocumentCommand{\newacronyms}{>{\SplitList{,}} m}
+	{\ProcessList{#1}{\newacronym}}
