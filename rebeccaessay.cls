@@ -81,7 +81,7 @@
 	]{Garamond Premier Pro}
 \fi
 
-\usepackage{gillius}
+\RequirePackage{gillius}
 
 \ifrebeccaessay@tabu
 \RequirePackage{multirow}
@@ -92,7 +92,6 @@
 	{\multicolumn{1}{#1}{\Bf{#2}}}
 \fi
 
-\errorcontextlines 10
 \raggedbottom
 \setlength{\parindent}{0.5in}
 \setlength{\parskip}{0em}
