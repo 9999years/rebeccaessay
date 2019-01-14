@@ -19,18 +19,24 @@
 \RequirePackage{hyperref}
 \RequirePackage{fancyhdr}
 
+% initializes complementary #1 and no#1 options
+\newcommand{\rebeccastyle@comploption}[1]{%
+	\DeclareBoolOption{#1}%
+	\DeclareComplementaryOption{no#1}{#1}}
+
 \RequirePackage{kvoptions}
-\DeclareBoolOption{tabu} % include table packages
-\DeclareBoolOption{figure} % set up nicer figures / captions
-\DeclareBoolOption{fonts} % include prettier fonts
-\DeclareBoolOption{times} % with 'fonts' option, use times rather than garamond
-\DeclareBoolOption{footnote} % set up nicer footnotes
-\DeclareBoolOption{quote} % blockquote environment
+\rebeccastyle@comploption{tabu} % include table packages
+\rebeccastyle@comploption{figure} % set up nicer figures / captions
+\rebeccastyle@comploption{font} % include prettier fonts
+\rebeccastyle@comploption{list} % set up prettier lists
+\DeclareBoolOption{times} % with 'font' option, use times rather than garamond
+\DeclareBoolOption[true]{garamond} % with 'font' option, use garamond (default)
+\rebeccastyle@comploption{footnote} % set up nicer footnotes
+\rebeccastyle@comploption{quote} % blockquote environment
 \DeclareBoolOption{1} % single line spacing
 \DeclareBoolOption{1.5} % 1.5x spacing
 \DeclareBoolOption{2} % 2x spacing
-\DeclareBoolOption{bib} % set up mla bibliography with biblatex
-\DeclareComplementaryOption{nobib}{bib}
+\rebeccastyle@comploption{bib} % set up mla bibliography with biblatex
 \ProcessKeyvalOptions*
 
 \ifrebeccastyle@tabu
@@ -38,7 +44,7 @@
 	\RequirePackage{booktabs}
 	\RequirePackage{longtable}
 	\RequirePackage{tabu}
-	\NewExpandableDocumentCommand{\Th}{O{l} m}
+	\ProvideExpandableDocumentCommand{\Th}{O{l} m}
 		{\multicolumn{1}{#1}{\Bf{#2}}}
 \fi
 
@@ -49,16 +55,23 @@
 	\captionsetup{format=hang, font={sf,footnotesize}, margin=1in}
 \fi
 
-\ifrebeccastyle@fonts
+\ifrebeccastyle@font
 	\RequirePackage{gillius}
 	\RequirePackage{fontspec}
 	\ifrebeccastyle@times
 		\setmainfont{Times New Roman}
-	\else
+	\fi
+	\ifrebeccastyle@garamond
 		\setmainfont[
 			Numbers=OldStyle,
 		]{Garamond Premier Pro}
 	\fi
+	\PassOptionsToPackage{factor=1500}{microtype}
+	\RequirePackage{microtype}
+\fi
+
+\ifrebeccastyle@list
+	\RequirePackage{enumitem}
 \fi
 
 \ifrebeccastyle@footnote
@@ -179,35 +192,59 @@
 \newif\ifrebeccastyle@date
 \rebeccastyle@datetrue
 
-\renewcommand{\maketitle}{
-	\begin{center}
+\renewcommand{\@maketitle}{%
+	\begin{center}%
 		\let\footnote\thanks
-		{
+		{%
 			\Large
 			\@title
 			\par
-		}
+		}%
 		\vskip 1em
 		\ifrebeccastyle@author
-		{
+		{%
 			\large
 			\lineskip 0.5em
-			\begin{tabular}[t]{c}
+			\begin{tabular}[t]{c}%
 				\@author
-			\end{tabular}
+			\end{tabular}%
 			\par
-		}
+		}%
 		\vskip 0.5em
 		\fi
 		\ifrebeccastyle@date
-		{
+		{%
 			\large
 			\@date
-		}
+		}%
 		\fi
-	\end{center}
+	\end{center}%
 	\par
-	\vskip 1.5em
+	\vskip 1.5em%
+}
+
+\renewcommand{\maketitle}{
+	\par
+	\begingroup
+	\renewcommand\thefootnote{\@fnsymbol\c@footnote}%
+	\def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
+	\long\def\@makefntext##1{\parindent 1em\noindent\hb@xt@ 1.8em%
+		{\hss\@textsuperscript{\normalfont\@thefnmark}}##1}
+	\if@twocolumn
+		\ifnum\col@number=\@ne
+			\@maketitle
+		\else
+			\twocolumn[\@maketitle]
+		\fi
+	\else
+		\newpage
+		\global\@topnum\z@
+		\@maketitle
+	\fi
+	\thispagestyle{empty}
+	\@thanks
+	\endgroup
+	\setcounter{footnote}{0}
 	}
 
 \renewcommand{\labelitemi}{---}

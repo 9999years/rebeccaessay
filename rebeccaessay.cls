@@ -5,7 +5,6 @@
 \RequirePackage{xparse}
 
 \PassOptionsToClass{12pt}{article}
-\PassOptionsToPackage{factor=1500}{microtype}
 \PassOptionsToPackage{
 	fonts,
 	footnote,
@@ -25,11 +24,13 @@
 
 % options for rebeccastyle
 \rebeccaessay@passoptions{
-	tabu,
-	figure,
-	fonts, times,
-	footnote,
-	quote,
+	tabu, notabu,
+	figure, nofigure,
+	list, nolist,
+	fonts, nofonts,
+	times, garamond,
+	footnote, nofootnote,
+	quote, noquote,
 	1, 1.5, 2,
 	bib, nobib,
 }
@@ -45,8 +46,6 @@
 \RequirePackage{etoolbox} % for suppressindent
 
 % formatting
-\RequirePackage{enumitem}
-\RequirePackage{microtype}
 
 \raggedbottom
 \setlength{\parindent}{0.5in}
