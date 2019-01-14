@@ -1,4 +1,4 @@
-\ProvidesPackage{rebeccastyle}[2019-01-03 0.0.1 Makes documents prettier and simplifies loading common packages]
+\ProvidesPackage{rebeccastyle}[2019/01/14 0.1.0 Makes documents prettier and simplifies loading common packages]
 \errorcontextlines 10
 
 % pages
@@ -29,6 +29,7 @@
 \rebeccastyle@comploption{figure} % set up nicer figures / captions
 \rebeccastyle@comploption{font} % include prettier fonts
 \rebeccastyle@comploption{list} % set up prettier lists
+\rebeccastyle@comploption{coverletter} % set up cover letters
 \DeclareBoolOption{times} % with 'font' option, use times rather than garamond
 \DeclareBoolOption[true]{garamond} % with 'font' option, use garamond (default)
 \rebeccastyle@comploption{footnote} % set up nicer footnotes
@@ -158,6 +159,40 @@
 		{\endlist\global\undef\bbx@lasthash}
 \fi
 
+\ifrebeccastyle@coverletter
+	\newcommand{\sectionskip}{\vspace{1em}}
+	\newcommand{\address}{%
+		\begin{flushright}
+		\thispagestyle{empty}
+		\vspace*{-1in}
+		\@author
+
+		\ifx\cmdKV@rebeccastyle@street\undefined\else\cmdKV@rebeccastyle@street\\\fi
+		\ifx\cmdKV@rebeccastyle@city\undefined\else\cmdKV@rebeccastyle@city\par\fi
+		\ifx\cmdKV@rebeccastyle@phone\undefined\else\cmdKV@rebeccastyle@phone\par\fi
+
+		\ifx\cmdKV@rebeccastyle@email\undefined\else\email{\cmdKV@rebeccastyle@email}\par\fi
+		\today
+	\end{flushright}
+	\vspace{1em}}
+
+	\define@cmdkey{coverletter}{author}{\author{#1}}
+	\define@cmdkeys{coverletter}{to, dear, signature}
+	\presetkeys{coverletter}{signature={Sincerely,}}{}
+	\newenvironment{coverletter}[1]
+		{\address
+
+		\@ifundefined{cmdKV@coverletter@dear}{}{%
+			\cmdKV@coverletter@dear\ }%
+		\@ifundefined{cmdKV@coverletter@to}{}{%
+			\cmdKV@coverletter@to,}%
+
+		\suppressindent}
+		{\sectionskip
+		\noindent\hspace*{0.5in}\cmdKV@coverletter@signature \\
+		\hspace*{0.5in}\hspace*{2em}--- \@author}
+\fi
+
 \let\Sc\textsc
 \let\Rm\textrm
 \let\Up\textup
@@ -166,13 +201,39 @@
 \let\Tt\texttt
 \let\ac\textsc
 
+% Section titles
 % rlapping \thesection gives us consistently aligned headings
 \titleformat{\section}{\Large\scshape}{\rlap{\thesection}\hspace{0.5in}}{0em}{}[]
-\titleformat{\subsection}{\large}{\rlap{\thesubsection}	\hspace{0.5in}}{0em}{}[]
-\titleformat{\subsubsection}{}{\rlap{\thesubsubsection}	\hspace{0.5in}}{0em}{}[]
+\titleformat{\subsection}{\large}{\rlap{\thesubsection}\hspace{0.5in}}{0em}{}[]
+\titleformat{\subsubsection}{}{\rlap{\thesubsubsection}\hspace{0.5in}}{0em}{}[]
 \titlespacing*{\section}{0em}{1em}{0.5em}[0em]
 \titlespacing*{\subsection}{0em}{1em}{0.5em}[0em]
 \titlespacing*{\subsubsection}{0em}{1em}{0.5em}[0em]
+
+% indent etc.
+\raggedbottom
+\setlength{\parindent}{0.5in}
+\setlength{\parskip}{0em}
+
+\def\emailstyle{}
+\providecommand{\email}[1]{\href{mailto:#1}{\emailstyle{#1}}}
+\newcommand{\rebeccaessay@suppressindent}{\par\@afterindentfalse\@afterheading}
+
+% Headers / footers
+\fancyhf{}
+\lhead{}
+\rhead{\@ifundefined{cmdKV@rebeccastyle@headername}{%
+	\ifrebeccastyle@author\@author\fi}{%
+	\cmdKV@rebeccastyle@headername
+	}\hspace{1em}\thepage}
+\setlength{\headheight}{0.5in}
+\fancypagestyle{plain}{\fancyhead[L]{}}
+\renewcommand{\headrulewidth}{0pt}
+% make first page empty
+\AtBeginDocument{\thispagestyle{empty}}
+
+\newif\ifrebeccastyle@date
+\rebeccastyle@datetrue
 
 \newif\ifrebeccastyle@author
 \rebeccastyle@authorfalse
@@ -180,17 +241,6 @@
 	\rebeccastyle@authortrue
 	\def\@author{#1}%
 }
-
-\fancyhf{}
-\lhead{}
-\rhead{\ifrebeccastyle@author\@author\fi\hspace{1em}\thepage}
-\setlength{\headheight}{0.5in}
-\fancypagestyle{plain}{\fancyhead[L]{}}
-\renewcommand{\headrulewidth}{0pt}
-\AtBeginDocument{\thispagestyle{empty}}
-
-\newif\ifrebeccastyle@date
-\rebeccastyle@datetrue
 
 \renewcommand{\@maketitle}{%
 	\begin{center}%
@@ -223,29 +273,30 @@
 	\vskip 1.5em%
 }
 
-\renewcommand{\maketitle}{
+\renewcommand{\maketitle}{%
 	\par
 	\begingroup
 	\renewcommand\thefootnote{\@fnsymbol\c@footnote}%
 	\def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
 	\long\def\@makefntext##1{\parindent 1em\noindent\hb@xt@ 1.8em%
-		{\hss\@textsuperscript{\normalfont\@thefnmark}}##1}
+		{\hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
 	\if@twocolumn
 		\ifnum\col@number=\@ne
 			\@maketitle
 		\else
-			\twocolumn[\@maketitle]
+			\twocolumn[\@maketitle]%
 		\fi
 	\else
 		\newpage
 		\global\@topnum\z@
 		\@maketitle
 	\fi
-	\thispagestyle{empty}
+	\thispagestyle{empty}%
 	\@thanks
 	\endgroup
-	\setcounter{footnote}{0}
-	}
+	\setcounter{footnote}{0}%
+	% NOTE: we don't erase the definitions of \@title, \thanks, etc.
+}
 
 \renewcommand{\labelitemi}{---}
 
@@ -257,3 +308,25 @@
 
 \NewDocumentCommand{\newacronyms}{>{\SplitList{,}} m}
 	{\ProcessList{#1}{\newacronym}}
+
+\define@cmdkey{rebeccastyle}{author}{\author{#1}}
+\define@cmdkeys{rebeccastyle}{
+	street, city, phone, email,
+	headername,
+	instructor, course,
+}
+\newcommand{\rebeccasetup}[1]{\setkeys{rebeccastyle}{#1}}
+
+\newcommand{\heading}{{%
+	\setlength{\parindent}{0em}%
+	\@author
+
+	\ifx\cmdKV@rebeccastyle@instructor\undefined\else\cmdKV@rebeccastyle@instructor\par\fi
+	\ifx\cmdKV@rebeccastyle@course\undefined\else\cmdKV@rebeccastyle@course\par\fi
+	\ifrebeccastyle@date
+		\@date
+	\fi
+	\vspace{1em}}}
+
+\newcommand{\intro}{\pagebreak\heading{\rebeccastyle@datefalse\maketitle}\suppressindent}
+

@@ -13,7 +13,7 @@
 \newcommand{\rs}{\package{rebeccastyle}}
 \title{The \re\ document class}
 \author{Rebecca Turner\thanks{Brandeis University; \email{rebeccaturner@brandeis.edu}}}
-\date{2018-10-20}
+\date{2019/1/14}
 \begin{document}
 \maketitle
 
@@ -64,11 +64,16 @@ declined by prefixing it with |no|; for example, |bib| is disabled with
 
 	Makes the |\fullcite| command available.
 
+	\key{coverletter}
+	Make the |coverletter| environment and the |\address| command
+	available.
+
 	\key{font}
-	Loads \ctan{fontspec} and \ctan{gillius}.
+	Loads \ctan{fontspec} and \ctan{gillius}. This option has no
+	negative form.
 
 	\key{times}
-	Sets the font to Times New Roman.
+	Sets the font to Times New Roman. This option has no negative form.
 
 	\key{garamond}
 	Sets the font to Garamond Premier Pro. Note that \option{garamond}
@@ -114,14 +119,17 @@ result in no bibliography system being loaded.
 Unknown class options are passed to \ltxclass{article}.
 
 \section{Commands}
+\subsection{Starting the essay}
 
 \begin{desc}
-|\newacronym[<command>]{<acronym text>}|
+|\newacronym[<command>]{<acronym text>}|\\
+|\newacronyms{<acronym list>}|
 \end{desc}
 
 Creates a new acronym. If |<command>| isn't given, the text of the macro
 will be used instead; |\newacronym{mla}| would create |\mla|. If the
-resulting command already exists, this will explode.
+resulting command already exists, this will explode. For |\newacronyms|, the
+|<acronym list>| is a comma-delimited list of acronyms.
 
 \begin{LTXexample}
 \newacronym[\xyz]{mla}
@@ -130,6 +138,80 @@ resulting command already exists, this will explode.
 \newacronym{ussr}
 The \ussr\ was\dots
 \end{LTXexample}
+
+\begin{desc}
+|\email{<email address>}|\\
+|\emailstyle{<email address>}|
+\end{desc}
+
+Prints an email address with a |mailto:| link. The address is printed in
+|\emailstyle|, which may be a command accepting one argument.
+
+\begin{desc}
+|\rebeccasetup{<options>}|
+\end{desc}
+
+Sets up general options. |<options>| can include:
+\begin{keys}
+	\key{street}[\m{street}]
+	\key{city}[\m{city}]
+	\key{phone}[\m{phone}]
+	\key{email}[\m{email}]
+	Address information, used in cover letters. Note that these keys are
+	useless without the \option{coverletter} option.
+
+	\key{author}[\m{author}]
+	Shortcut for |\author{<author>}|.
+
+	\key{headername}[\m{headername}]
+	The name used in page headers. \mla\ requires only a surname, so it
+	may be appropriate to set your surname here.
+
+	\key{instructor}[\m{instructor}]
+	The course instructor. Used in the \mla\ |\intro| command.
+
+	\key{course}[\m{course}]
+	The course number. Used in the \mla\ |\intro| command.
+\end{keys}
+
+\begin{desc}
+|\heading|
+\end{desc}
+An \mla\ essay heading with the course instructor, course, and date.
+Generally, users will want to use |\intro| instead.
+
+\begin{desc}
+|\intro|
+\end{desc}
+A combination of |\heading| and |\maketitle|.
+
+\subsection{Other commands}
+
+\begin{desc}
+|\address|
+\end{desc}
+\reqopt{coverletter} Prints the address flush-right.
+
+\begin{desc}
+|\begin{coverletter}{<options>}...\end{coverletter}|
+\end{desc}
+\reqopt{coverletter} A cover letter, beginning with an |\address| and ending
+with a signature. |<options>| must include \option{to}.
+\begin{keys}
+	\key[note=Mandatory]{to}[\m{recipient}]
+	Person the letter is addressed to.
+
+	\key{author}[\m{author}]
+	The letter author. Actually a shortcut for |\author{<author>}|.
+
+	\key{dear}[\m{text}][\{\}]
+	Text in the style of ``dear\dots'' placed before the recipient's
+	name.
+
+	\key{signature}[\m{text}][Sincerely,]
+	Signature text like ``Sincerely,'' or ``Love,'' prepended to the
+	author's name.
+\end{keys}
 
 \begin{desc}
 |\Th[<column spec>]{<header text>}|
