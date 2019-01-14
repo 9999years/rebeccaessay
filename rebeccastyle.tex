@@ -1,0 +1,168 @@
+\documentclass{ltxguidex}
+\usepackage{fontspec}
+\setmainfont{Tiempos Text}
+\usepackage{FiraSans}
+\usepackage{FiraMono}
+
+\newcommand{\reqopt}[1]{Requires the \texttt{\color{magenta}#1} option.\par}
+\usepackage{hologo}
+\usepackage[quote]{rebeccastyle}
+\newacronyms{mla,}
+\newcommand{\fontspecok}{\hologo{XeLaTeX} or \hologo{LuaTeX}}
+\newcommand{\re}{\ltxclass{rebeccaessay}}
+\newcommand{\rs}{\package{rebeccastyle}}
+\title{The \re\ document class}
+\author{Rebecca Turner\thanks{Brandeis University; \email{rebeccaturner@brandeis.edu}}}
+\date{2018-10-20}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+	\re\ is a document class extending \ltxclass{article} for
+	\fontspecok\ typeset in Garamond, with \mla\ citations via
+	\hologo{BibTeX}, variable line spacing, and a |coverletter|
+	environment.
+
+	\re\ is, as the name implies, mostly intended for personal use.
+\end{abstract}
+
+\tableofcontents
+\vfill
+\pagebreak
+
+\section{Package options}
+
+By default, \rs\ does very little; additional features are opted into with
+package options. Unless otherwise noted, an option can be explicitly
+declined by prefixing it with |no|; for example, |bib| is disabled with
+|nobib|.
+
+\begin{keys}
+	\key{tabu}
+	Loads table packages \ctan{multirow}, \ctan{booktabs}, and
+	\ctan{tabu}.
+
+	Makes the |\Th| command available.
+
+	\key{figure}
+	Loads \ctan{graphicx} and \ctan{caption}, makes figure captions
+	prettier.
+
+	\key{list}
+	Loads \ctan{enumitem}.
+
+	\key{footnote}
+	Loads \ctan{footmisc} and makes footnotes prettier.
+
+	\key{quote}
+	Redefines the |quote| and |quotation| environments to add an
+	optional argument.
+
+	\key{bib}
+	Sets up the document for an \mla-cited bibliography using Biber.
+	Loads \ctan{biblatex}, \ctan{csquotes}, and \ctan{babel}.
+
+	Makes the |\fullcite| command available.
+
+	\key{font}
+	Loads \ctan{fontspec} and \ctan{gillius}.
+
+	\key{times}
+	Sets the font to Times New Roman.
+
+	\key{garamond}
+	Sets the font to Garamond Premier Pro. Note that \option{garamond}
+	is the default when the \option{font} option is given.
+
+	\key{1}
+	\key{1.5}
+	\key{2}
+	Controls leading with the \ctan{setspace} package. These options
+	have no negative forms (e.x.\ \option{no1}).
+
+	\begin{note}
+		The \option{1} option differs from the default in that it
+		loads the \package{setspace} package and calls
+		|\singlespace|.
+	\end{note}
+\end{keys}
+
+\subsection{Default behavior}
+
+\rs\ does perform some configuration regardless of what options are passed.
+This includes:
+
+\begin{itemize}
+	\item Loading \ctan{geometry} and setting 1-inch margins.
+	\item Loading \ctan{hyperref}.
+	\item Loading \ctan{fancyhdr} and setting a better page-header.
+	\item Loading \ctan{titlesec} and setting better formatting for
+	|\section| and cousins.
+	\item Making |\maketitle| better.
+\end{itemize}
+
+\section{The \re\ document class}
+Using the \re\ document class is mostly equivalent to
+\begin{latexcode}
+\documentclass[12pt]{article}
+\usepackage[fonts, footnote, quote, bib]{rebeccastyle}
+\end{latexcode}
+
+However, the default options can be overridden; passing \option{nobib} will
+result in no bibliography system being loaded.
+
+Unknown class options are passed to \ltxclass{article}.
+
+\section{Commands}
+
+\begin{desc}
+|\newacronym[<command>]{<acronym text>}|
+\end{desc}
+
+Creates a new acronym. If |<command>| isn't given, the text of the macro
+will be used instead; |\newacronym{mla}| would create |\mla|. If the
+resulting command already exists, this will explode.
+
+\begin{LTXexample}
+\newacronym[\xyz]{mla}
+\xyz
+
+\newacronym{ussr}
+The \ussr\ was\dots
+\end{LTXexample}
+
+\begin{desc}
+|\Th[<column spec>]{<header text>}|
+\end{desc}
+
+\reqopt{tabu} Typesets a table header in bold-face. |<column spec>| defaults
+to |l|. Useful for when a column is wrapped in a math environment.
+
+\begin{desc}
+|\begin{quote}[<options>]...\end{quote}|\\
+|\begin{quotation}[<options>]...\end{quotation}|\\
+\end{desc}
+
+\reqopt{quote} A wrapper around the original |quote| and |quotation|
+environments which adds support for sources. |<options>| may include:
+\begin{keys}
+	\key{author}[\m{author}]
+	The quote's author.
+
+	\key{source}[\m{source}]
+	The quote source. If the \option{author} option is also given, the
+	source is printed in parenthesis.
+
+	\key{cite}[\m{bib key}]
+	A citation key. If given, |\textcite{<bib key>}| is used for the
+	attribution. If given with \option{source} or \option{author}, may
+	lead to unexpected results.
+\end{keys}
+
+\begin{desc}
+|\fullcite{<bib key>}|
+\end{desc}
+
+\reqopt{bib} Prints a full citation as it will appear in the bibliography.
+
+\end{document}
