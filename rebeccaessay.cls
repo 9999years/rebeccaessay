@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{rebeccaessay}[2019/01/11 1.0.0 Personal document class for MLA-cited essays]
+\ProvidesClass{rebeccaessay}[${VERSION}$ Personal document class for MLA-cited essays]
 \errorcontextlines 10
 
 \RequirePackage{xparse}

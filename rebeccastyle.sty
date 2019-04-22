@@ -1,4 +1,4 @@
-\ProvidesPackage{rebeccastyle}[2019/01/14 0.1.0 Makes documents prettier and simplifies loading common packages]
+\ProvidesPackage{rebeccastyle}[${VERSION}$ Makes documents prettier and simplifies loading common packages]
 \errorcontextlines 10
 
 % utility
@@ -6,20 +6,36 @@
 \RequirePackage{xkeyval}
 
 % initializes complementary #1 and no#1 options
+<<<<<<< HEAD
 \newcommand{\rebeccastyle@comploption}[2][false]{%
 	\DeclareBoolOption[#1]{#2}%
 	\DeclareComplementaryOption{no#2}{#2}}
+||||||| merged common ancestors
+\newcommand{\rebeccastyle@comploption}[1]{%
+	\DeclareBoolOption{#1}%
+	\DeclareComplementaryOption{no#1}{#1}}
+=======
+\NewDocumentCommand{\rebeccastyle@comploption}{O{false} m}{%
+	\DeclareBoolOption[#1]{#2}%
+	\DeclareComplementaryOption{no#2}{#2}}
+>>>>>>> makefile improvements, fixes
 
 \RequirePackage{kvoptions}
+\rebeccastyle@comploption[true]{geometry} % set up paper size / margins
+\rebeccastyle@comploption[true]{maketitle} % change maketitle
+\rebeccastyle@comploption[true]{titles} % change maketitle
+\rebeccastyle@comploption[true]{headers} % change page headers
+\rebeccastyle@comploption[true]{hyperref} % load hyperref
+\rebeccastyle@comploption[true]{shorthands} % \ac, \Sc, \It, etc.
 \rebeccastyle@comploption{tabu} % include table packages
-\rebeccastyle@comploption{figure} % set up nicer figures / captions
-\rebeccastyle@comploption{font} % include prettier fonts
-\rebeccastyle@comploption{list} % set up prettier lists
+\rebeccastyle@comploption{figures} % set up nicer figures / captions
+\rebeccastyle@comploption{fonts} % include prettier fonts
+\rebeccastyle@comploption{lists} % set up prettier lists
 \rebeccastyle@comploption{coverletter} % set up cover letters
 \DeclareBoolOption{times} % with 'font' option, use times rather than garamond
 \DeclareBoolOption[true]{garamond} % with 'font' option, use garamond (default)
-\rebeccastyle@comploption{footnote} % set up nicer footnotes
-\rebeccastyle@comploption{quote} % blockquote environment
+\rebeccastyle@comploption{footnotes} % set up nicer footnotes
+\rebeccastyle@comploption{quotes} % blockquote environment
 \DeclareBoolOption{1} % single line spacing
 \DeclareBoolOption{1.5} % 1.5x spacing
 \DeclareBoolOption{2} % 2x spacing
@@ -31,6 +47,7 @@
 \rebeccastyle@comploption[true]{header}
 \ProcessKeyvalOptions*
 
+<<<<<<< HEAD
 \ifrebeccastyle@hyperref
 	\RequirePackage{hyperref}
 \fi
@@ -46,6 +63,19 @@
 	\RequirePackage{geometry}
 \fi
 
+||||||| merged common ancestors
+=======
+\ifrebeccastyle@geometry
+	% pages
+	\RequirePackage[
+		letterpaper,
+		margin=1in,
+		tmargin=1in,
+		bmargin=1.25in,
+	]{geometry}
+\fi
+
+>>>>>>> makefile improvements, fixes
 \ifrebeccastyle@tabu
 	\RequirePackage{multirow}
 	\RequirePackage{booktabs}
@@ -55,14 +85,14 @@
 		{\multicolumn{1}{#1}{\Bf{#2}}}
 \fi
 
-\ifrebeccastyle@figure
+\ifrebeccastyle@figures
 	% figure captions
 	\RequirePackage{graphicx}
 	\RequirePackage{caption}
 	\captionsetup{format=hang, font={sf,footnotesize}, margin=1in}
 \fi
 
-\ifrebeccastyle@font
+\ifrebeccastyle@fonts
 	\RequirePackage{gillius}
 	\RequirePackage{fontspec}
 	\ifrebeccastyle@times
@@ -77,17 +107,17 @@
 	\RequirePackage{microtype}
 \fi
 
-\ifrebeccastyle@list
+\ifrebeccastyle@lists
 	\RequirePackage{enumitem}
 \fi
 
-\ifrebeccastyle@footnote
+\ifrebeccastyle@footnotes
 	\PassOptionsToPackage{bottom, hang}{footmisc}
 	\RequirePackage{footmisc}
 	\setlength{\footnotesep}{\baselineskip}
 \fi
 
-\ifrebeccastyle@quote
+\ifrebeccastyle@quotes
 	\define@cmdkeys{quotesource}{author, source, cite}
 	\NewDocumentCommand{\quotesource}{ m }{{%
 		\setkeys{quotesource}{#1}%
@@ -193,20 +223,23 @@
 		\@ifundefined{cmdKV@coverletter@to}{}{%
 			\cmdKV@coverletter@to,}%
 
-		\suppressindent}
+		\rebeccaessay@suppressindent}
 		{\sectionskip
 		\noindent\hspace*{0.5in}\cmdKV@coverletter@signature \\
 		\hspace*{0.5in}\hspace*{2em}--- \@author}
 \fi
 
-\let\Sc\textsc
-\let\Rm\textrm
-\let\Up\textup
-\let\Bf\textbf
-\let\It\textit
-\let\Tt\texttt
-\let\ac\textsc
+\ifrebeccastyle@shorthands
+	\let\Sc\textsc
+	\let\Rm\textrm
+	\let\Up\textup
+	\let\Bf\textbf
+	\let\It\textit
+	\let\Tt\texttt
+	\let\ac\textsc
+\fi
 
+<<<<<<< HEAD
 \ifrebeccastyle@title
 	\RequirePackage{titlesec}
 	% Section titles
@@ -218,6 +251,28 @@
 	\titlespacing*{\subsection}{0em}{1em}{0.5em}[0em]
 	\titlespacing*{\subsubsection}{0em}{1em}{0.5em}[0em]
 \fi
+||||||| merged common ancestors
+% Section titles
+% rlapping \thesection gives us consistently aligned headings
+\titleformat{\section}{\Large\scshape}{\rlap{\thesection}\hspace{0.5in}}{0em}{}[]
+\titleformat{\subsection}{\large}{\rlap{\thesubsection}\hspace{0.5in}}{0em}{}[]
+\titleformat{\subsubsection}{}{\rlap{\thesubsubsection}\hspace{0.5in}}{0em}{}[]
+\titlespacing*{\section}{0em}{1em}{0.5em}[0em]
+\titlespacing*{\subsection}{0em}{1em}{0.5em}[0em]
+\titlespacing*{\subsubsection}{0em}{1em}{0.5em}[0em]
+=======
+% Section titles
+% rlapping \thesection gives us consistently aligned headings
+\ifrebeccastyle@titles
+	\RequirePackage{titlesec}
+	\titleformat{\section}{\Large\scshape}{\rlap{\thesection}\hspace{0.5in}}{0em}{}[]
+	\titleformat{\subsection}{\large}{\rlap{\thesubsection}\hspace{0.5in}}{0em}{}[]
+	\titleformat{\subsubsection}{}{\rlap{\thesubsubsection}\hspace{0.5in}}{0em}{}[]
+	\titlespacing*{\section}{0em}{1em}{0.5em}[0em]
+	\titlespacing*{\subsection}{0em}{1em}{0.5em}[0em]
+	\titlespacing*{\subsubsection}{0em}{1em}{0.5em}[0em]
+\fi
+>>>>>>> makefile improvements, fixes
 
 % indent etc.
 \raggedbottom
@@ -228,16 +283,37 @@
 \providecommand{\email}[1]{\href{mailto:#1}{\emailstyle{#1}}}
 \newcommand{\rebeccaessay@suppressindent}{\par\@afterindentfalse\@afterheading}
 
+<<<<<<< HEAD
+||||||| merged common ancestors
+% Headers / footers
+\fancyhf{}
+\lhead{}
+\rhead{\@ifundefined{cmdKV@rebeccastyle@headername}{%
+	\ifrebeccastyle@author\@author\fi}{%
+	\cmdKV@rebeccastyle@headername
+	}\hspace{1em}\thepage}
+\setlength{\headheight}{0.5in}
+\fancypagestyle{plain}{\fancyhead[L]{}}
+\renewcommand{\headrulewidth}{0pt}
+% make first page empty
+\AtBeginDocument{\thispagestyle{empty}}
+
+=======
+\newif\ifrebeccastyle@author
+\rebeccastyle@authorfalse
+
+>>>>>>> makefile improvements, fixes
 \newif\ifrebeccastyle@date
 \rebeccastyle@datetrue
 
-\newif\ifrebeccastyle@author
-\rebeccastyle@authorfalse
-\renewcommand{\author}[1]{%
-	\rebeccastyle@authortrue
-	\def\@author{#1}%
+\def\rebeccastyle@defineauthor{%
+	\renewcommand{\author}[1]{%
+		\rebeccastyle@authortrue
+		\def\@author{##1}%
+	}%
 }
 
+<<<<<<< HEAD
 \ifrebeccastyle@header
 	\RequirePackage{fancyhdr}
 	% Headers / footers
@@ -253,7 +329,135 @@
 	% make first page empty
 	\AtBeginDocument{\thispagestyle{empty}}
 \fi
+||||||| merged common ancestors
+\renewcommand{\@maketitle}{%
+	\begin{center}%
+		\let\footnote\thanks
+		{%
+			\Large
+			\@title
+			\par
+		}%
+		\vskip 1em
+		\ifrebeccastyle@author
+		{%
+			\large
+			\lineskip 0.5em
+			\begin{tabular}[t]{c}%
+				\@author
+			\end{tabular}%
+			\par
+		}%
+		\vskip 0.5em
+		\fi
+		\ifrebeccastyle@date
+		{%
+			\large
+			\@date
+		}%
+		\fi
+	\end{center}%
+	\par
+	\vskip 1.5em%
+}
+=======
+\ifrebeccastyle@headers
+	\rebeccastyle@defineauthor
+	\RequirePackage{fancyhdr}
+	% Headers / footers
+	\fancyhf{}
+	\lhead{}
 
+	\rhead{%
+		\@ifundefined{cmdKV@rebeccastyle@headername}%
+			{\ifrebeccastyle@author
+				\@author
+			\fi}%
+			{\cmdKV@rebeccastyle@headername}%
+		\hspace{1em}%
+		\thepage
+	}
+
+	\setlength{\headheight}{0.5in}
+	\fancypagestyle{plain}{\fancyhead[L]{}}
+	\renewcommand{\headrulewidth}{0pt}
+	% make first page empty
+	\AtBeginDocument{\thispagestyle{empty}}
+\fi
+
+\ifrebeccastyle@maketitle
+	\rebeccastyle@defineauthor
+
+	\renewcommand{\@maketitle}{%
+		\begin{center}%
+			\let\footnote\thanks
+			{%
+				\Large
+				\@title
+				\par
+			}%
+			\vskip 1em
+			\ifrebeccastyle@author
+				{%
+					\large
+					\lineskip 0.5em
+					\begin{tabular}[t]{c}%
+						\@author
+					\end{tabular}%
+					\par
+				}%
+				\vskip 0.5em
+			\fi
+			\ifrebeccastyle@date
+				{%
+					\large
+					\@date
+				}%
+			\fi
+		\end{center}%
+		\par
+		\vskip 1.5em%
+	}
+
+	\renewcommand{\maketitle}{%
+		\par
+		\begingroup
+		\renewcommand\thefootnote{\@fnsymbol\c@footnote}%
+		\def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
+		\long\def\@makefntext##1{\parindent 1em\noindent\hb@xt@ 1.8em%
+			{\hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
+		\if@twocolumn
+			\ifnum\col@number=\@ne
+				\@maketitle
+			\else
+				\twocolumn[\@maketitle]%
+			\fi
+		\else
+			\newpage
+			\global\@topnum\z@
+			\@maketitle
+		\fi
+		\thispagestyle{empty}%
+		\@thanks
+		\endgroup
+		\setcounter{footnote}{0}%
+		% NOTE: we don't erase the definitions of \@title, \thanks, etc.
+	}
+
+	\newcommand{\heading}{{%
+		\setlength{\parindent}{0em}%
+		\@author
+
+		\@ifundefined{cmdKV@rebeccastyle@instructor}{}{\cmdKV@rebeccastyle@instructor\par}%
+		\@ifundefined{cmdKV@rebeccastyle@course}{}{\cmdKV@rebeccastyle@course\par}%
+		\ifrebeccastyle@date
+			\@date
+		\fi
+		\vspace{1em}%
+	}}
+>>>>>>> makefile improvements, fixes
+
+<<<<<<< HEAD
 \ifrebeccastyle@maketitle
 	\renewcommand{\@maketitle}{%
 		\begin{center}%
@@ -311,13 +515,63 @@
 		% NOTE: we don't erase the definitions of \@title, \thanks, etc.
 	}
 \fi
+||||||| merged common ancestors
+\renewcommand{\maketitle}{%
+	\par
+	\begingroup
+	\renewcommand\thefootnote{\@fnsymbol\c@footnote}%
+	\def\@makefnmark{\rlap{\@textsuperscript{\normalfont\@thefnmark}}}%
+	\long\def\@makefntext##1{\parindent 1em\noindent\hb@xt@ 1.8em%
+		{\hss\@textsuperscript{\normalfont\@thefnmark}}##1}%
+	\if@twocolumn
+		\ifnum\col@number=\@ne
+			\@maketitle
+		\else
+			\twocolumn[\@maketitle]%
+		\fi
+	\else
+		\newpage
+		\global\@topnum\z@
+		\@maketitle
+	\fi
+	\thispagestyle{empty}%
+	\@thanks
+	\endgroup
+	\setcounter{footnote}{0}%
+	% NOTE: we don't erase the definitions of \@title, \thanks, etc.
+}
+=======
+	\newcommand{\intro}{%
+		\pagebreak
+		\heading
+		{\rebeccastyle@datefalse\maketitle}%
+		\rebeccaessay@suppressindent
+	}
+\fi
+>>>>>>> makefile improvements, fixes
 
 \renewcommand{\labelitemi}{---}
 
 \NewDocumentCommand{\newacronym}{o m}
+<<<<<<< HEAD
 	{\IfValueTF{#1}%
 		{\def#1{\Sc{#2}}}%
 		{\expandafter\def\csname #2\endcsname{\Sc{#2}}}}
+||||||| merged common ancestors
+	{\IfValueTF{#1}%
+		{\def\@acronym@cs{#1}}%
+		{\def\@acronym@cs{\csname #2\endcsname}}%
+	\expandafter\def\@acronym@cs{\Sc{#2}}}
+=======
+	{\def\acronym@cs{\IfValueTF{#1}{\string#1}{#2}}%
+	\@ifundefined{\acronym@cs}%
+		{}%
+		{\PackageError{rebeccastyle}{Refusing to redefine
+		\csname\acronym@cs\endcsname as an acronym}{Pick a different destination
+		control sequence with \protect\newacronym's optional argument?}}%
+	\expandafter\def\csname\acronym@cs\endcsname{\textsc{#2}}%
+	}
+>>>>>>> makefile improvements, fixes
 
 \NewDocumentCommand{\newacronyms}{>{\SplitList{,}} m}
 	{\ProcessList{#1}{\newacronym}}
@@ -330,16 +584,8 @@
 }
 \newcommand{\rebeccasetup}[1]{\setkeys{rebeccastyle}{#1}}
 
-\newcommand{\heading}{{%
-	\setlength{\parindent}{0em}%
-	\@author
+\ifrebeccastyle@hyperref
+	\RequirePackage{hyperref}
+\fi
 
-	\ifx\cmdKV@rebeccastyle@instructor\undefined\else\cmdKV@rebeccastyle@instructor\par\fi
-	\ifx\cmdKV@rebeccastyle@course\undefined\else\cmdKV@rebeccastyle@course\par\fi
-	\ifrebeccastyle@date
-		\@date
-	\fi
-	\vspace{1em}}}
-
-\newcommand{\intro}{\pagebreak\heading{\rebeccastyle@datefalse\maketitle}\suppressindent}
-
+\let\rebeccastyle@defineauthor\relax
