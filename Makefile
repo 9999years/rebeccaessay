@@ -18,8 +18,8 @@ ifeq ($(UNAME), Cygwin)
 	HOME := $(shell cygpath ${USERPROFILE})
 endif
 
-TEXMF_ROOT := ${HOME}/texmf
-INSTALL_DIR := $(TEXMF_ROOT)/tex/latex/${PACKAGE}
+TEXMF := ${HOME}/.texmf
+INSTALL_DIR := ${TEXMF}/tex/latex/${PACKAGE}
 LATEXMK := latexmk -pdf -r $(ROOT_DIR)/.latexmkrc -pvc- -pv-
 LATEXMK_CLEAN := $(LATEXMK) -c
 
