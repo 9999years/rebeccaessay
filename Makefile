@@ -63,7 +63,7 @@ clean:
 
 install: dir-no-pdf
 	install -d ${INSTALL_DIR}
-	cd ${PACKAGE} && install $(DIST_FILES) ${INSTALL_DIR}
+	cd ${PACKAGE} && install -m 644 $(DIST_FILES) ${INSTALL_DIR}
 
 .PHONY:                            help
 help:
