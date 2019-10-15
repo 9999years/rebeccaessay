@@ -1,4 +1,5 @@
 \documentclass{ltxguidex}
+\usepackage{changelog}
 \usepackage{fontspec}
 \setmainfont{Tiempos Text}
 \usepackage{FiraSans}
@@ -6,7 +7,7 @@
 
 \newcommand{\reqopt}[1]{Requires the \texttt{\color{magenta}#1} option.\par}
 \usepackage{hologo}
-\usepackage[quote]{rebeccastyle}
+\usepackage[quotes]{rebeccastyle}
 \newacronyms{mla,}
 \newcommand{\fontspecok}{\hologo{XeLaTeX} or \hologo{LuaTeX}}
 \newcommand{\re}{\ltxclass{rebeccaessay}}
@@ -44,17 +45,17 @@ declined by prefixing it with |no|; for example, |bib| is disabled with
 
 	Makes the |\Th| command available.
 
-	\key{figure}
+	\key{figures}
 	Loads \ctan{graphicx} and \ctan{caption}, makes figure captions
 	prettier.
 
-	\key{list}
+	\key{lists}
 	Loads \ctan{enumitem}.
 
-	\key{footnote}
+	\key{footnotes}
 	Loads \ctan{footmisc} and makes footnotes prettier.
 
-	\key{quote}
+	\key{quotes}
 	Redefines the |quote| and |quotation| environments to add an
 	optional argument.
 
@@ -168,20 +169,20 @@ Sets up general options. |<options>| can include:
 	may be appropriate to set your surname here.
 
 	\key{instructor}[\m{instructor}]
-	The course instructor. Used in the \mla\ |\intro| command.
+	The course instructor. Used in the \mla\ |\essayintro| command.
 
 	\key{course}[\m{course}]
-	The course number. Used in the \mla\ |\intro| command.
+	The course number. Used in the \mla\ |\essayintro| command.
 \end{keys}
 
 \begin{desc}
 |\heading|
 \end{desc}
 An \mla\ essay heading with the course instructor, course, and date.
-Generally, users will want to use |\intro| instead.
+Generally, users will want to use |\essayintro| instead.
 
 \begin{desc}
-|\intro|
+|\essayintro|
 \end{desc}
 A combination of |\heading| and |\maketitle|.
 
@@ -247,4 +248,15 @@ environments which adds support for sources. |<options>| may include:
 
 \reqopt{bib} Prints a full citation as it will appear in the bibliography.
 
+\begin{changelog}[author=Rebecca Turner]
+\begin{version}[v=0.2.0, date=2019-10-15]
+\changed
+  \item Renamed |\intro| to |\essayintro| to avoid a conflict with the
+    \ctan{knowledge} package.
+  \item Build now uses \href{https://github.com/casey/just}{\texttt{just}} instead of
+  |make|.
+\fixed
+  \item Fixed options being spelled incorrectly in documentation.
+\end{version}
+\end{changelog}
 \end{document}

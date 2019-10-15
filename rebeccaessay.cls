@@ -7,8 +7,8 @@
 \PassOptionsToClass{12pt}{article}
 \PassOptionsToPackage{
 	fonts,
-	footnote,
-	quote,
+	footnotes,
+	quotes,
 	bib
 }{rebeccastyle}
 
@@ -30,8 +30,8 @@
 	coverletter, nocoverletter,
 	fonts, nofonts,
 	times, garamond,
-	footnote, nofootnote,
-	quote, noquote,
+	footnotes, nofootnotes,
+	quotes, noquotes,
 	1, 1.5, 2,
 	bib, nobib,
 }
