@@ -39,6 +39,26 @@ declined by prefixing it with |no|; for example, |bib| is disabled with
 |nobib|.
 
 \begin{keys}
+	\key{geometry}
+	Loads \ctan{geometry} and sets 1-inch margins. Enabled by default.
+
+	\key{maketitle}
+	Redefines |\maketitle| to be prettier, provides the |\heading| and
+	|\essayintro| commands. Enabled by default.
+
+	\key{titles}
+	Loads \ctan{titlesec} and provides better section formats. Enabled by
+	default.
+
+	\key{headers}
+	Loads \ctan{fancyhdr} and sets better page headers. Enabled by default.
+
+	\key{hyperref}
+	Loads \ctan{hyperref} Enabled by default.
+
+	\key{shorthands}
+	Provides command shorthands. Enabled by default.
+
 	\key{tabu}
 	Loads table packages \ctan{multirow}, \ctan{booktabs}, and
 	\ctan{tabu}.
@@ -69,9 +89,8 @@ declined by prefixing it with |no|; for example, |bib| is disabled with
 	Make the |coverletter| environment and the |\address| command
 	available.
 
-	\key{font}
-	Loads \ctan{fontspec} and \ctan{gillius}. This option has no
-	negative form.
+	\key{fonts}
+	Loads \ctan{fontspec} and \ctan{gillius}.
 
 	\key{times}
 	Sets the font to Times New Roman. This option has no negative form.
@@ -93,20 +112,6 @@ declined by prefixing it with |no|; for example, |bib| is disabled with
 	\end{note}
 \end{keys}
 
-\subsection{Default behavior}
-
-\rs\ does perform some configuration regardless of what options are passed.
-This includes:
-
-\begin{itemize}
-	\item Loading \ctan{geometry} and setting 1-inch margins.
-	\item Loading \ctan{hyperref}.
-	\item Loading \ctan{fancyhdr} and setting a better page-header.
-	\item Loading \ctan{titlesec} and setting better formatting for
-	|\section| and cousins.
-	\item Making |\maketitle| better.
-\end{itemize}
-
 \section{The \re\ document class}
 Using the \re\ document class is mostly equivalent to
 \begin{latexcode}
@@ -124,7 +129,8 @@ Unknown class options are passed to \ltxclass{article}.
 
 \begin{desc}
 |\newacronym[<command>]{<acronym text>}|\\
-|\newacronyms{<acronym list>}|
+|\newacronyms{<acronym list>}|\\
+= |\ac| \qquad (With \option{shorthands} option.)
 \end{desc}
 
 Creates a new acronym. If |<command>| isn't given, the text of the macro
