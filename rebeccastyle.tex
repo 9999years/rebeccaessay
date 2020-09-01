@@ -1,7 +1,14 @@
 \documentclass{ltxguidex}
 \usepackage{changelog}
 \usepackage{fontspec}
-\setmainfont{Tiempos Text}
+\setmainfont{Charter}[
+  Path = /nix/store/8ylkcs5xw8b3glvgp5l66md6hvxdk098-charter-200512/share/fonts/opentype/,
+  Extension = .otf,
+  UprightFont = * Regular,
+  ItalicFont = * Italic,
+  BoldFont = * Bold,
+  BoldItalicFont = * Bold Italic,
+]
 \usepackage{FiraSans}
 \usepackage{FiraMono}
 
@@ -12,7 +19,7 @@
 \newcommand{\fontspecok}{\hologo{XeLaTeX} or \hologo{LuaTeX}}
 \newcommand{\re}{\ltxclass{rebeccaessay}}
 \newcommand{\rs}{\package{rebeccastyle}}
-\title{The \re\ document class}
+\title{The \rs\ package and the \re\ document class}
 \author{Rebecca Turner\thanks{Brandeis University; \email{rebeccaturner@brandeis.edu}}}
 \date{${VERSION}$}
 \begin{document}
