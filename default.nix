@@ -29,9 +29,10 @@ let
   build = { pdf ? true, tar ? true, ... }:
     stdenv.mkDerivation rec {
       inherit pkg;
-      name = "latex-${pkg}-${versionNumber}";
+      pname = pkg;
+      name = "texlive-${pkg}-${versionNumber}";
       date = "2020/10/01";
-      versionNumber = "0.3.5";
+      versionNumber = "0.3.6";
       version = "${date} ${versionNumber}";
 
       buildInputs = with pkgs;
@@ -85,6 +86,7 @@ let
         ''}
       '';
     };
+
 in rec {
   tar = build { };
   dir = build {
