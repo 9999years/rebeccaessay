@@ -31,7 +31,7 @@ let
       inherit pkg;
       name = "latex-${pkg}-${versionNumber}";
       date = "2020/10/01";
-      versionNumber = "0.3.3";
+      versionNumber = "0.3.4";
       version = "${date} ${versionNumber}";
 
       buildInputs = with pkgs;
