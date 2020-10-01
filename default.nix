@@ -31,7 +31,7 @@ let
       inherit pkg;
       name = "latex-${pkg}-${versionNumber}";
       date = "2020/10/01";
-      versionNumber = "0.3.4";
+      versionNumber = "0.3.5";
       version = "${date} ${versionNumber}";
 
       buildInputs = with pkgs;
@@ -93,14 +93,12 @@ in rec {
   };
   dir-pdf = build { tar = false; };
   texlive = {
-    rebeccaessay = {
-      pkgs = lib.singleton (dir.overrideAttrs (old: {
-        tlType = "run";
-        installPhase = old.installPhase + ''
-          mkdir -p $out/tex/latex/
-          mv $out/${old.pkg} $out/tex/latex/
-        '';
-      }));
-    };
+    pkgs = lib.singleton (dir.overrideAttrs (old: {
+      tlType = "run";
+      installPhase = old.installPhase + ''
+        mkdir -p $out/tex/latex/
+        mv $out/${old.pkg} $out/tex/latex/
+      '';
+    }));
   };
 }
