@@ -28,7 +28,7 @@ let
   build = { pdf ? true, tar ? true, ... }:
     stdenv.mkDerivation rec {
       name = "latex-${pkg}";
-      version = "2020/10/01 0.3.2";
+      version = "2020/10/01 0.3.3";
 
       buildInputs = with pkgs;
         [
@@ -83,12 +83,14 @@ in rec {
   };
   dir-pdf = build { tar = false; };
   texlive = {
-    pkgs = lib.singleton (dir.overrideAttrs (old: {
-      tlType = "run";
-      installPhase = old.installPhase + ''
-        mkdir -p $out/tex/latex/
-        mv $out/${old.pkg} $out/tex/latex/
-      '';
-    }));
+    rebeccaessay = {
+      pkgs = lib.singleton (dir.overrideAttrs (old: {
+        tlType = "run";
+        installPhase = old.installPhase + ''
+          mkdir -p $out/tex/latex/
+          mv $out/${old.pkg} $out/tex/latex/
+        '';
+      }));
+    };
   };
 }
