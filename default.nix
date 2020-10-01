@@ -25,10 +25,14 @@ let
 
   pkg = "rebeccaessay";
   versionSentinel = "\${VERSION}$";
+  dateSentinel = "\${DATE}$";
   build = { pdf ? true, tar ? true, ... }:
     stdenv.mkDerivation rec {
-      name = "latex-${pkg}";
-      version = "2020/10/01 0.3.3";
+      inherit pkg;
+      name = "latex-${pkg}-${versionNumber}";
+      date = "2020/10/01";
+      versionNumber = "0.3.3";
+      version = "${date} ${versionNumber}";
 
       buildInputs = with pkgs;
         [
@@ -56,7 +60,13 @@ let
       dontConfigure = true;
       buildPhase = let latexmk = "latexmk -pdf -r ./latexmkrc -pvc- -pv-";
       in ''
-        sd --string-mode '${versionSentinel}' '${version}' *.tex *.sty
+        sd --string-mode \
+           ${lib.escapeShellArg versionSentinel} ${lib.escapeShellArg version} \
+           *.tex *.sty *.cls
+        sd --string-mode \
+           ${lib.escapeShellArg dateSentinel} ${lib.escapeShellArg date} \
+           *.tex *.sty *.cls
+
         ${lib.optionalString pdf "${latexmk} *.tex"}
 
         rm -rf ${pkg}
