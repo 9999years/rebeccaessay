@@ -1,6 +1,9 @@
 { pkgs ? import <nixpkgs> { }, }:
 let
-  inherit (pkgs) stdenv lib fetchzip fontconfig;
+  date = "2020/10/16";
+  versionNumber = "0.3.7";
+
+  inherit (pkgs) stdenv lib fetchzip texlive sd;
 
   charter = stdenv.mkDerivation rec {
     pname = "charter";
@@ -15,38 +18,39 @@ let
     dontConfigure = true;
     dontBuild = true;
     installPhase = ''
-      mkdir -p $out/share/fonts
-      mv "Charter/OpenType" $out/share/fonts/opentype
-      mv "Charter/OpenType TT" $out/share/fonts/truetype
-      mv "Charter/WOFF" $out/share/fonts/woff
-      mv "Charter license.txt" $out/LICENSE.txt
+      mkdir -p $out/fonts/opentype/public
+      mv "Charter/OpenType" $out/fonts/opentype/public/charter
+      mv "Charter license.txt" $out/fonts/opentype/public/charter/LICENSE.txt
+      # mv "Charter/OpenType TT" $out/share/fonts/truetype
+      # mv "Charter/WOFF" $out/share/fonts/woff
     '';
+
+    # needed for texlive...
+    tlType = "run";
   };
+
+  charter-texlive = { pkgs = lib.singleton charter; };
 
   pkg = "rebeccaessay";
   versionSentinel = "\${VERSION}$";
   dateSentinel = "\${DATE}$";
   build = { pdf ? true, tar ? true, ... }:
     stdenv.mkDerivation rec {
-      inherit pkg;
-      pname = pkg;
-      name = "texlive-${pkg}-${versionNumber}";
-      date = "2020/10/01";
-      versionNumber = "0.3.6";
+      inherit pkg versionNumber date;
+      name = "latex-${pkg}";
+      pname = "latex-${pkg}-${versionNumber}";
       version = "${date} ${versionNumber}";
 
-      buildInputs = with pkgs;
-        [
-          (texlive.combine rec {
-            inherit (texlive)
-              scheme-small collection-xetex latexmk collection-latexrecommended
-              ltxguidex translations framed enumitem showexpl babel babel-german
-              babel-english changepage fira varwidth changelog titlesec;
-          })
-          fd
-          sd
-          just
-        ] ++ [ charter ];
+      buildInputs = [
+        (texlive.combine rec {
+          inherit (texlive)
+            scheme-small collection-xetex latexmk collection-latexrecommended
+            ltxguidex translations framed enumitem showexpl babel babel-german
+            babel-english changepage fira varwidth changelog titlesec;
+          charter = charter-texlive;
+        })
+        sd
+      ];
 
       src = ./.;
       distSrcs = [
@@ -87,13 +91,19 @@ let
       '';
     };
 
-in rec {
   tar = build { };
   dir = build {
     pdf = false;
     tar = false;
   };
   dir-pdf = build { tar = false; };
+
+  # Copied from nixpkgs.
+  combinePkgs = pkgSet:
+    lib.concatLists # uniqueness is handled in `texlive.combine`
+    (lib.mapAttrsToList (_n: a: a.pkgs) pkgSet);
+in {
+  inherit tar dir dir-pdf;
   texlive = {
     pkgs = lib.singleton (dir.overrideAttrs (old: {
       tlType = "run";
